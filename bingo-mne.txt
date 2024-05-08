@@ -1,0 +1,753 @@
+******************************************************************
+* BINGO-MNE  v1.00.80.TIXB  Saturday Night Bingo Main Assembly   *
+******************************************************************
+*                                                                *
+* Source Published: 05/08/2024 garyopa.com via TI99.AtariAge.com *
+*                                                                *
+* Copyrighted 1980 by TI & Cecil Chin & 9T9 Assembly Sig & O.P.A *
+*                                                                *
+* Credit Must Be Included When Using Any Assembly Sources Below! *
+*                                                                *
+******************************************************************
+ 
+**********************************
+* BINGO-MNE  MAIN CODING         *
+**********************************
+START  LWPI WSPACE
+       LI   R0,>0300
+       MOVB R0,@KEYADR
+       BL   @CHRCOL
+       LI   R0,>0400
+       LI   R1,SPRITE
+       LI   R2,96
+       BLWP @VMBW
+       BL   @SPRWRT
+       DATA >0460,SPRITG,10
+       LI   R0,>0500
+       LI   R1,SPRITF
+       LI   R2,192
+       BLWP @VMBW
+       LI   R3,CHARS0
+MOCHR  MOV  *R3+,R0
+       JLT  NOCHR
+       MOV  *R3+,R2
+       MOV  *R3+,R1
+       BLWP @VMBW
+       JMP  MOCHR
+NOCHR  LI   R0,>0980
+       LI   R1,SAVSCR
+       LI   R2,80
+       BLWP @VMBR
+       LI   R0,>0D00
+       BLWP @VMBW
+       LI   R0,>0D50
+       CLR  R1
+       LI   R2,8
+CHR170 BLWP @VSBW
+       INC  R0
+       DEC  R2
+       JNE  CHR170
+       BLWP @CLEAR
+       DATA 0,768
+       BLWP @WRTSCR
+       DATA MENV
+       LI   R0,>0300
+       LI   R1,TRACT
+       LI   R2,25
+       BLWP @VMBW
+       LI   R0,>01E2
+       BLWP @VWTR
+       SWPB R0
+       MOVB R0,@>83D4
+       LI   R0,>0780
+       LI   R1,DIRSPD
+       LI   R2,24
+       BLWP @VMBW
+       LI   R3,>0600
+       MOVB R3,@>837A
+       BL   @MVESP
+       DATA 200,600
+       LI   R3,>0100
+       MOVB R3,@>837A
+       BL   @MVESP
+       DATA 300,900
+       CLR  R3
+       MOVB R3,@>837A
+       BLWP @WRTSCR
+       DATA MENW
+       BL   @SCAN
+       BLWP @CLEAR
+       DATA 480,288
+OUTPUU BLWP @WRTSCR
+       DATA MENA
+       BLWP @KB
+       DATA 450,OUTBUF,0016
+       CB   @KEYVAL,@DEC15+1
+       JNE  GOON
+       B    @SFIRST
+GOON   SLA  R0,8
+       MOVB R0,@OUTPAB+9
+ININUM LI   R0,75
+ININUN BL   @RND$NO
+       DATA 75
+       MOV  R2,R9
+       BL   @RND$NO
+       DATA 75
+       SLA  R2,1
+       SLA  R9,1
+       MOV  @CLINE(R9),R8
+       MOV  @CLINE(R2),@CLINE(R9)
+       MOV  R8,@CLINE(R2)
+       DEC  R0
+       JNE  ININUN
+       LI   R0,>0300
+       LI   R1,>D000
+       BLWP @VSBW
+MMENU  BL   @CHRCOL
+       BLWP @CLEAR
+       DATA 0,768
+       BLWP @WRTSCR
+       DATA MENU
+MMENV  BL   @SCAN
+       BL   @GETKEY    AUTO, MANUAL, PRT CARDS
+       DATA NUMCHK,6   PRT CALL LIST, END
+       JMP  MMENV
+OUTPUT BLWP @CLEAR
+       DATA 224,544
+       B    @OUTPUU
+ENDPRG BLWP @0
+AUTO   CI   R1,49
+       JEQ  AUTP
+       CLR  @AUTFLG
+       JMP  AUTQ
+AUTP   SETO @AUTFLG
+AUTQ   LI   R0,>0707
+       BLWP @VWTR
+       LI   R0,>0380
+       LI   R1,>1700
+PUTCOM BLWP @VSBW
+       INC  R0
+       CI   R0,>039F
+       JLE  PUTCOM
+       LI   R0,>0380
+       LI   R1,>1700
+       BLWP @VSBW
+       INC  R0         >0381
+       LI   R1,>FC00
+       BLWP @VSBW
+       INC  R0         >0382
+       LI   R1,>C700
+       BLWP @VSBW
+       LI   R0,>0386
+       LI   R1,>FC00
+       BLWP @VSBW
+       INC  R0         >0387
+       BLWP @VSBW
+       LI   R0,>038F
+       LI   R1,>4F00
+       BLWP @VSBW
+       INC  R0         >0390
+       LI   R1,>1E00
+       BLWP @VSBW
+       INC  R0         >0391
+       LI   R1,>1F00
+       BLWP @VSBW
+       INC  R0         >0392
+       BLWP @VSBW
+       INC  R0         >0393
+       BLWP @VSBW
+       INC  R0         >0394
+       LI   R1,>F800
+       BLWP @VSBW
+       INC  R0         >0395
+       BLWP @VSBW
+       BLWP @CLEAR
+       DATA 0,768
+       BLWP @WRTSCR
+       DATA MSCRN
+       LI   R12,CLINE
+AUTO2  MOV  *R12+,R10
+       JLT  AUTO0
+       BL   @CALADR
+       DATA DOSPRT
+*********************************
+       BL   @CAGNUM
+       CB   R10,@SPCES
+       JNE  AUTO3
+       MOVB @L08,R10
+AUTO3  LI   R1,WSPACE+20
+       LI   R2,2
+SAVR0  LI   R0,>0000
+       BLWP @VMBW
+       MOV  @AUTFLG,@AUTFLG
+       JEQ  MANUAL
+AUTO03 LI   R0,4000
+AUTO01 CLR  @STATUS
+       BLWP @KSCAN
+       MOVB @STATUS,@STATUS
+       JNE  AUTO02
+       DEC  R0
+       JNE  AUTO01
+AUTO02 BL   @GETKEY
+       DATA LETCHK,4
+       JMP  AUTO2
+AUTO7  BL   @TALKS
+       JMP  AUTO03
+MANUAL BL   @SCAN
+       BL   @GETKEY
+       DATA LETCHK,5
+       JMP  MANUAL
+AUTO0  BL   @SCAN
+       B    @ININUM
+DOSPRT MOV  R11,@DOSPRV+2
+       CB   R10,@ZERO
+       JNE  DOSPRW
+       MOVB @SPCES,R10
+DOSPRW MOVB R10,R0
+       SRL  R0,8         * Calculate CHAR address
+       SLA  R0,3         *
+       AI   R0,>0800     *
+       LI   R1,REDCHR
+       LI   R2,8
+       BLWP @VMBR
+       AI   R1,8
+       MOV  R10,R0
+       ANDI R0,>00FF     Make MSB zero
+       SLA  R0,3         Calculate CHAR address
+       AI   R0,>0800
+       BLWP @VMBR
+       MOV  R6,R3
+       DEC  R3
+       CLR  R2
+       DIV  @DEC15,R2
+       SLA  R2,2
+       AI   R2,140
+       MOVB @WSPACE+5,@SPRTNM+6
+       MOVB @WSPACE+5,@SPRTLO+2
+       SLA  R2,3
+       AI   R2,8
+       MOV  R2,@DOSPRU
+       BL   @SPRWRT
+DOSPRU DATA >0000,REDCHR,2
+DOSPRV B    @>0000
+VDPWRT MOV  *R11+,R0
+       MOV  *R11+,R1
+       MOV  *R11+,R2
+       BLWP @VMBW
+       RT
+BINGX  BL   @VDPWRT
+       DATA 608,SAVSCR,160
+       B    @BINGV
+BINGO1 LI   R0,608
+       LI   R1,SAVSCR
+       LI   R2,160
+       BLWP @VMBR
+       CLR  @BGOFLG
+       BLWP @CLEAR
+       DATA 608,160
+       MOV  R12,@BINGV+2
+BINGP  BLWP @WRTSCR
+       DATA BMENU
+       MOV  @SAVLEN,R9
+       MOV  @SPCES,@BGONUM(R9)
+       BLWP @KB
+       DATA 706,BGONUM,>0018
+       CB   @KEYVAL,@DEC15+1
+       JNE  GOOO
+       JMP  BINGX
+GOOO   MOV  R0,R9
+       CI   R0,24
+       JL   GOOP1
+       BLWP @KB
+       DATA 738,BGONUM+24,>0018
+       CB   @KEYVAL,@DEC15+1
+       JNE  GOOP
+       JMP  BINGX
+GOOP   A    R0,R9
+GOOP1  MOV  R9,@SAVLEN
+       SETO @BGONUM(R9)
+       LI   R12,BGONUM
+BINGQ  CB   *R12,@ZERO
+       JL   BINGP
+       CB   *R12+,@ZERO+1
+       JH   BINGP
+       DEC  R9
+       JNE  BINGQ
+       LI   R12,BGONUM        * Check if input
+GOOP2  MOV  *R12+,R1          * less than "01"
+       JLT  GOOP3             * or more then "75"
+       C    R1,@BLINE         *
+       JL   BINGP             *
+       C    R1,@OLINE+28      *
+       JH   BINGP             *
+       JMP  GOOP2             *
+GOOP3  BLWP @CHECK
+       DATA SAVLEN
+       MOV  @BGOFLG,R1
+       JEQ  GOOP4
+       BLWP @CLEAR
+       DATA 704,64
+       BL   @VDPWRT
+       DATA 738,BNO,28
+       BL   @SCAN
+       BLWP @CLEAR
+       DATA 704,64
+       JMP  BINGP
+GOOP4  LI   R12,BGONUM
+       BL   @VDPWRT
+       DATA 608,SAVSCR,160
+BINGR  MOV  *R12+,R10
+       JLT  BINGS
+       BL   @CALADR
+       DATA DOCHR
+       LI   R1,WSPACE+20
+       LI   R2,2
+       BLWP @VMBW
+       JMP  BINGR
+BINGS  MOV  @BGOFLG,R1
+       JEQ  YES
+       LI   R1,BNO
+       MOV  R1,@PDATA+2
+       JMP  BPRT
+YES    LI   R1,BYES
+       MOV  R1,@PDATA+2
+BPRT   BL   @VDPWRT
+PDATA  DATA 738,>0000,28
+BINGW  BL   @SCAN
+       CLR  R1
+       MOVB @KEYVAL,R1
+       CI   R1,>5300     "S",83
+       JEQ  BINGY
+       CI   R1,>4E00     "N",78
+       JNE  BINGW
+       LI   R1,ININUM
+       MOV  R1,@BING1+2
+       JMP  BINGZ
+BINGY  LI   R1,BINGT
+       MOV  R1,@BING1+2
+BINGZ  BLWP @CLEAR
+       DATA 738,28
+BING1  B    @>0000
+BINGT  LI   R12,BGONUM
+BINGU  MOV  *R12+,R10
+       JLT  BINGV
+       BL   @CALADR
+       DATA RECHR
+       LI   R1,WSPACE+20
+       LI   R2,2
+       BLWP @VMBW
+       JMP  BINGU
+BINGV  LI   R12,>0000
+       B    @AUTO2
+DOCHR  LI   R1,WSPACE+20
+       LI   R2,2
+       BLWP @VMBR
+       AI   R10,>7070
+       LI   R4,>AA00
+       LI   R3,>7800
+       CB   R10,R3
+       JNE  DOCHT
+       MOVB R4,R10
+       SWPB R10
+       CB   R10,R3
+       JNE  DOCHS
+       MOVB R4,R10
+       SETO @BGOFLG
+DOCHS  SWPB R10
+DOCHT  RT
+RECHR  LI   R1,WSPACE+20
+       LI   R2,2
+       BLWP @VMBR
+       AI   R10,->7070
+       LI   R3,>3A00
+       CB   R10,R3
+       JNE  RECHT
+       MOVB @L08,R10
+       SWPB R10
+       CB   R10,R3
+       JNE  RECHS
+       MOVB @L08,R10
+RECHS  SWPB R10
+RECHT  RT
+RMENU  B    @MMENU
+CRDPRT BLWP @CLEAR
+       DATA 192,416
+CRDIN  BLWP @WRTSCR
+       DATA MENX
+       BLWP @KB
+       DATA 404,CRDBUF,0003
+       CB   @KEYVAL,@DEC15+1
+       JNE  GOOQ
+       B    @MMENU
+GOOQ   MOV  R0,@ASCDAT+2
+       LI   R1,CRDBUF
+CRDIO  CB   *R1,@ZERO
+       JL   CRDIN
+       CB   *R1+,@ZERO+1
+       JH   CRDIN
+       DEC  R0
+       JNE  CRDIO
+       BLWP @ASCBIN
+ASCDAT DATA CRDBUF,>0000
+       MOV  R6,R12
+       JEQ  RMENU
+       BLWP @WRTSCR
+       DATA MENY
+       BL   @OPNWRT
+PRTCRD LI   R5,5
+PRTCRE BL   @GETRND
+       MOV  @BLINE(R2),R7
+       MOV  @BLINE(R8),@BLINE(R2)
+       MOV  R7,@BLINE(R8)
+       BL   @GETRND
+       MOV  @ILINE(R2),R7
+       MOV  @ILINE(R8),@ILINE(R2)
+       MOV  R7,@ILINE(R8)
+       BL   @GETRND
+       MOV  @NLINE(R2),R7
+       MOV  @NLINE(R8),@NLINE(R2)
+       MOV  R7,@NLINE(R8)
+       BL   @GETRND
+       MOV  @GLINE(R2),R7
+       MOV  @GLINE(R8),@GLINE(R2)
+       MOV  R7,@GLINE(R8)
+       BL   @GETRND
+       MOV  @OLINE(R2),R7
+       MOV  @OLINE(R8),@OLINE(R2)
+       MOV  R7,@OLINE(R8)
+       DEC  R5
+       JNE  PRTCRE
+ 
+*********************************
+* Print Bingo cards             *
+*********************************
+PRTHED CLR  R7
+       LI   R4,HTEXT
+PRTHEE LI   R0,PABBUF
+       LI   R6,2
+PRTHEF MOV  *R4+,R2
+       JEQ  PRTBDY
+       LI   R1,SPCES
+       BLWP @VMBW
+       A    R2,R7
+       A    R2,R0
+       MOV  *R4+,R2
+       MOV  *R4+,R1
+       BLWP @VMBW
+       A    R2,R7
+       A    R2,R0
+       DEC  R6
+       JEQ  PRTHEG
+       LI   R1,>0A00
+       BLWP @VSBW
+       INC  R7
+       INC  R0
+       JMP  PRTHEF
+PRTHEG BL   @DSREXE
+       JMP  PRTHEE
+PRTBDY LI   R5,5
+       LI   R9,-4
+PRTBDZ LI   R0,PABBUF
+       CLR  R7
+       LI   R8,2
+       BL   @SNDLNE
+       DATA CRD02
+       BL   @SNDLNE
+       DATA CRD02
+       BL   @DSREXE
+       LI   R0,PABBUF
+       CLR  R7
+       AI   R9,4
+       BL   @PUTNUM
+       LI   R8,2
+       BL   @SNDLNE
+       DATA CRD03
+       BL   @SNDLNE
+       DATA CRD02
+       BL   @DSREXE
+       LI   R0,PABBUF
+       CLR  R7
+       LI   R8,2
+       BL   @SNDLNE
+       DATA CRD02
+       BL   @SNDLNE
+       DATA CRD01
+       BL   @DSREXE
+       DEC  R5
+       JNE  PRTBDZ
+       LI   R0,PABBUF
+       LI   R1,>0C00
+       BLWP @VSBW
+       LI   R7,1
+       BL   @DSREXE
+       DEC  R12
+       JNE  PRTCR$
+CLOSE  LI   R0,OUTADR
+       LI   R1,>0100
+       BLWP @VSBW
+       BL   @DSREXF
+       B    @MMENU
+PRTCR$ B    @PRTCRD
+OPNWRT MOV  R11,@OPNWRU+2
+       LI   R0,OUTADR
+       LI   R1,OUTPAB
+       LI   R2,32
+       BLWP @VMBW
+       BL   @DSREXF
+       LI   R1,>0300
+       BLWP @VSBW
+OPNWRU B    @>0000
+GETRND MOV  R11,@GETRNE+2
+       BL   @RND$NO
+       DATA 15
+       MOV  R2,R8
+       BL   @RND$NO
+       DATA 15
+       SLA  R2,1
+       SLA  R8,1
+GETRNE B    @>0000
+SNDLNE MOV  *R11+,@SNDLNF+2
+       LI   R1,SPCES
+       LI   R2,12
+       BLWP @VMBW
+       A    R2,R0
+       A    R2,R7
+SNDLNF LI   R1,>0000
+       LI   R2,51
+       BLWP @VMBW
+       A    R2,R0
+       A    R2,R7
+       DEC  R8
+       JEQ  SNDLNG
+       LI   R1,>0A00
+       BLWP @VSBW
+       INC  R0
+       INC  R7
+SNDLNG RT
+PUTNUM LI   R8,CRD03+5
+       MOV  @BLINE(R9),R10
+       CB   @ZERO,R10
+       JNE  PUTNUN
+       MOVB @SPCES,R10
+PUTNUN MOVB R10,*R8+
+       SWPB R10
+       MOVB R10,*R8+
+       AI   R8,8
+       MOV  @ILINE(R9),R10
+       MOVB R10,*R8+
+       SWPB R10
+       MOVB R10,*R8+
+       CI   R5,3
+       JNE  PUTNUO
+       AI   R8,7
+       MOV  @FREE,*R8+
+       MOV  @FREE+2,*R8+
+       AI   R8,7
+       JMP  PUTNUP
+PUTNUO AI   R8,7
+       MOV  @SPCES,*R8+
+       MOV  @NLINE(R9),*R8+
+       AI   R8,7
+PUTNUP MOV  @GLINE(R9),R10
+       MOVB R10,*R8+
+       SWPB R10
+       MOVB R10,*R8+
+       AI   R8,8
+       MOV  @OLINE(R9),R10
+       MOVB R10,*R8+
+       SWPB R10
+       MOVB R10,*R8+
+       RT
+CALLST BL   @OPNWRT
+       BLWP @CLEAR
+       DATA 192,416
+       BLWP @WRTSCR
+       DATA MENB
+       CLR  R7
+       LI   R0,PABBUF
+       BL   @PUTTIT
+       DATA LSTTIT
+       BL   @PUTTIT
+       DATA LSTLNE
+       BL   @DSREXE
+       CLR  R4
+       LI   R5,50
+       LI   R3,100
+CALLSU LI   R0,PABBUF
+       CLR  R7
+       MOV  @CLINE(R4),R10
+       BL   @PUTSPC
+       DATA 17
+       MOV  @CLINE(R5),R10
+       BL   @PUTSPC
+       DATA 18
+       MOV  @CLINE(R3),R10
+       BL   @PUTSPC
+       DATA 19
+       LI   R1,>0A00
+       BLWP @VSBW
+       INC  R7
+       BL   @DSREXE
+       INCT R4
+       CI   R4,50
+       JEQ  CALDNE
+       INCT R5
+       INCT R3
+       JMP  CALLSU
+CALDNE B    @CLOSE
+********************************
+PUTTIT MOV  *R11+,@PUTTIU+2
+       LI   R1,SPCES
+       LI   R2,32
+       BLWP @VMBW
+       A    R2,R0
+       A    R2,R7
+PUTTIU LI   R1,>0000
+       LI   R2,15
+       BLWP @VMBW
+       A    R2,R0
+       A    R2,R7
+       LI   R1,>0A00
+       BLWP @VSBW
+       INC  R0
+       INC  R7
+       RT
+*********************************
+PUTSPC MOV  *R11+,R2
+       MOV  R11,@PUTRT+2
+       LI   R1,SPCES
+       BLWP @VMBW
+       A    R2,R7
+       A    R2,R0
+       BL   @GETLET
+       CB   @ZERO,R10
+       JNE  PUTSPE
+       MOVB @SPCES,R10
+PUTSPE LI   R1,WSPACE+20
+       LI   R2,2
+       BLWP @VMBW
+       A    R2,R7
+       A    R2,R0
+PUTRT  B    @>0000
+ 
+*********************************
+* Get and check key press if    * BL   @GETKEY
+* correct goto right routine    * DATA TABLE ADDRESS
+*********************************
+GETKEY MOV  *R11+,@GETKEA+2
+       MOV  *R11+,R3     *
+       MOVB @KEYVAL,R1   *
+       SRL  R1,8         *
+GETKEA LI   R2,>0000     * Automatic mode
+GETKEB C    *R2+,R1      * Manual mode
+       JEQ  GETKEC       *
+       INCT R2           * Print cards
+       DEC  R3           *    CRDPRT
+       JEQ  GETKEZ       * Print call list
+       JMP  GETKEB       *    CALLST
+GETKEC MOV  *R2,R11      * End programme
+GETKEZ RT                *    ENDPRG
+ 
+**********************************
+* Calculate screen address       *
+* branch to routine to put       *
+* number in sprite               *
+**********************************
+CALADR MOV  *R11+,@CALADS+2
+       MOV  R11,@CALADT+2
+       BLWP @ASCBIN
+       DATA WSPACE+20,2
+       MOV  R6,R0
+       MOV  R6,R4       Formula to get ROW
+       DEC  R4          (NUM-(((NUM-1)/15)*15))+7
+       CLR  R3
+       DIV  @DEC15,R3
+       MOV  R3,R1
+       MPY  @DEC15,R3
+       S    R4,R0
+       AI   R0,7        R0=ROW
+       MPY  @DEC3,R1    Formula to get COLUMN
+       INCT R2          (((NUM-1)/15)*3)+2
+       DEC  R0          R2=COLUMN
+       SLA  R0,5        Formula to get screen address
+       INC  R2          ((ROW-1)*32)+(COL+1)
+       A    R2,R0
+       MOV  R0,@SAVR0+2
+CALADS BL   @>0000
+CALADT B    @>0000
+*********************************
+CAGNUM MOV  R11,@CAGNUN+2     Save return address
+       BL   @VDPWRT           Put 5 Sprites on screen
+       DATA >300,CAGBAR,21    #1-4  transparent
+       LI   R0,>01E3          Magnification  4
+       BLWP @VWTR
+       SWPB R0
+       MOVB R0,@>83D4         Save VDP R1
+       BL   @VDPWRT           Set speed of sprites
+       DATA >780,CAGBAS,20    #1-4 fixed #5 moving
+       LI   R3,>0500          # of spirtes to move
+       MOVB R3,@>837A
+       BL   @MVESP            Move sprites
+       DATA 150,200
+       BL   @VDPWRT           Restart sprite #5
+       DATA >310,CAGBAR+16,2
+       BL   @MVESP
+       DATA 150,200
+       BL   @VDPWRT           Restart sprite #5
+       DATA >310,CAGBAR+16,2
+       BL   @MVESP
+       DATA 150,200
+       CLR  R3                stop sprite
+       MOVB R3,@>837A
+       BL   @VDPWRT
+       DATA >310,CAGBAR+16,2  Restart sprite #5
+*********************************
+       BL   @VDPWRT           Wrtie Sprites #6-10 on screen
+       DATA >314,SPRTNM,21    #6 & 8=red B/grd, #7=Number
+       BL   @VDPWRT           Set motion
+       DATA >794,SPRTNN,20    #7,9,10 motionless
+       LI   R3,>FA00          Change speed of #5
+       BL   @VDPWRT
+       DATA >790,WSPACE+6,1
+       LI   R3,>0800          Moving up to sprite #8
+       MOVB R3,@>837A
+       BL   @MVESP            Move sprite
+       DATA 100,1200
+       BL   @TALKS            Say number
+       CLR  R3                Stop all sprites
+       MOVB R3,@>837A
+       BL   @VDPWRT           Make #5 motionless
+       DATA >790,WSPACE+6,1
+       BL   @VDPWRT           Make #6 motionless
+       DATA >794,WSPACE+6,1
+       BL   @VDPWRT           Make #8 motionless
+       DATA >79C,WSPACE+6,1
+       LI   R3,>0900          *
+       BL   @VDPWRT           * Set #7 speed
+       DATA >798,WSPACE+6,1
+       LI   R3,>0A00          Moving up to sprite #10
+       MOVB R3,@>837A
+       BL   @MVESP            move sprite
+       DATA 200,400
+       CLR  R3                *
+       MOVB R3,@>837A         * Stop all sprites
+       BL   @VDPWRT           * Locate #7,9,10 in bottom box
+       DATA >318,SPRTLO,4     *
+       BL   @VDPWRT           *
+       DATA >320,SPRTLO+4,8   *
+       BL   @TALKS            Go and say number
+CAGNUN B    @>0000
+ 
+*********************************
+* Routine to send word address  *
+* to talk sub routine           *
+*********************************
+TALKS  MOV  R11,@TALKU+2
+       MOV  R6,R7       R6 contains # 1-75
+       DEC  R7          R7 contains # 0-74
+       MPY  @HEXA,R7    Multiply by 10 (10 bytes per phrase)
+       AI   R8,SPEECH   Get address of phrase
+       MOV  R8,@TALKT   Move it to DATA line
+       BL   @TALK       Say phrase
+TALKT  DATA >0000
+TALKU  B    @>0000

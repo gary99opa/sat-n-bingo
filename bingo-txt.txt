@@ -1,0 +1,354 @@
+******************************************************************
+* BINGO-TXT  v1.00.80.TIXB  Bingo Data/Text/Buffers/Workspace    *
+******************************************************************
+*                                                                *
+* Source Published: 05/08/2024 garyopa.com via TI99.AtariAge.com *
+*                                                                *
+* Copyrighted 1980 by TI & Cecil Chin & 9T9 Assembly Sig & O.P.A *
+*                                                                *
+* Credit Must Be Included When Using Any Assembly Sources Below! *
+*                                                                *
+******************************************************************
+ 
+**********************************
+* BINGO-TXT  TEXT, DATA, BYTES,  *
+*            BSS                 *
+**********************************
+TRACT  DATA >2891,>8801,>28A7,>A008,>30B9,>A402
+       DATA >38CB,>A80B,>40DD,>AC0D,>48EF,>B00E,>D000
+DIRSPD DATA >00FE,0,>00FE,0,>00FE,0,>00FE,0,>00FE,0,>00FE,0
+CAGBAR DATA >F4B8,>8000,>F4B8,>8000,>F4B8,>8000
+       DATA >F4B8,>8000,>19B8,>8001,>D000
+CAGBAS DATA 0,0,0,0,0,0,0,0,>FE00,0
+SPRTNM DATA >18B8,>B407,>17B9,>8C01,>14B8,>B407
+       DATA >17B8,>B406,>14B8,>B406,>D000
+SPRTNN DATA >FA00,0,0,0,>FA00,0,>0900,0,>0900,0
+SPRTLO DATA >4FB9,>8C01,>4CB8,>B40B,>4FB8,>B40B
+NUMCHK DATA 49,AUTO,50,AUTO,51,CRDPRT
+       DATA 52,CALLST,53,OUTPUT,54,ENDPRG
+LETCHK DATA 66,BINGO1,78,ININUM,80,MANUAL,82,AUTO7
+       DATA 83,AUTO2
+MENU   DATA 0,37,ME01,165,ME02,69,ME04,90,ME05,133,ME04    *
+       DATA 154,ME05,101,ME03,228,MEN11,324,MEN12,388,MEN13
+       DATA 452,MEN14,516,MEN15,580,MEN19,644,MEN16,-1
+MENV   DATA 0,103,MEN01,386,MEN02,482,TITLE1,514,TITLE2
+       DATA 546,TITLE3,578,TITLE4,610,TITLE5,-1
+MENW   DATA 0,743,MEN03,-1
+MENX   DATA BEEP,386,MEN06,-1
+MENY   DATA 0,386,MEN07,-1
+MENA   DATA BEEP,386,MEN04,-1
+MENB   DATA 0,386,MEN08,-1
+SPRNUM DATA >0460,>0480,>04A0,>04C0,>04E0,-1
+PA     DATA OUTADR+9
+HEXA   DATA >000A
+DEC3   DATA 3
+DEC15  DATA 15
+BGOFLG DATA >0000
+AUTFLG DATA >0000
+SPRITE DATA >FF00,>00FF,>0000,>FF00     *100 -128
+       DATA >00FF,>0000,>FF00,>00FF     *101 -129
+       DATA >FF00,>00FF,>0000,>FF00     *102 -130
+       DATA >00FF,>0000,>FF00,>00FF     *103 -131
+TRACA  DATA >0C18,>0020,>2000,>2123     #132 Tractor no 1
+       DATA >267E,>FFFE,>FEFF,>6160     #133
+       DATA >0000,>0000,>00F8,>FC26     #134
+       DATA >2323,>FF23,>2326,>FCF8     #135
+TRACB  DATA >0018,>3000,>0000,>2123     #104 -136 Tractor no 2
+       DATA >267E,>FEFE,>FEFF,>6160     #105 -137
+       DATA >0000,>0000,>00F8,>FC06     #106 -138
+       DATA >8B53,>2353,>8B06,>FCF8     #107 -139
+SPRITG DATA >0007,>0404,>0704,>0407     *140  B in bingo
+       DATA >0080,>4040,>8040,>4080     *142
+       DATA >0003,>0101,>0101,>0103     *144  I in bingo
+       DATA >0080,>0000,>0000,>0080     *146
+       DATA >0004,>0605,>0504,>0404     *148  N in bingo
+       DATA >0040,>4040,>40C0,>C040     *150
+       DATA >0003,>0404,>0404,>0403     *152  G in bingo
+       DATA >0080,>4000,>C040,>4080     *154
+       DATA >0003,>0404,>0404,>0403     *156  O in bingo
+       DATA >0080,>4040,>4040,>4080     *158
+ 
+SPRITF DATA >0000,>1F1F,>0E0E,>0E0E     *120 -160  B    140
+       DATA >0F0F,>0E0E,>0E0E,>1F1F     *121 -161       141
+       DATA >0000,>F0F8,>3838,>3838     *122 -162       142
+       DATA >F0F0,>3838,>3838,>F8F0     *123 -163    Col 1,15
+       DATA >0000,>0707,>0303,>0303     *124 -164  I    144
+       DATA >0303,>0303,>0303,>0707     *125 -165       145
+       DATA >0000,>C0C0,>8080,>8080     *126 -166       146
+       DATA >8080,>8080,>8080,>C0C0     *127 -167       147
+       DATA >0000,>1E1E,>0F0F,>0F0F     *128 -168  N    148
+       DATA >0F0D,>0D0C,>0C0C,>1E1E     *129 -169       149
+       DATA >0000,>7878,>3030,>B0F0     *130 -170       150
+       DATA >F0F0,>F0F0,>F070,>7878     *131 -171       151
+       DATA >0000,>0F1F,>1F1C,>1C1C     *132 -172  G    152
+       DATA >1C1C,>1C1C,>1C1F,>1F0F     *133 -173       153
+       DATA >0000,>E0F0,>F030,>3000     *134 -174       154
+       DATA >00F8,>F870,>70F0,>F0E0     *135 -175       155
+       DATA >0000,>0F1F,>1C1C,>1C1C     *136 -176  O    156
+       DATA >1C1C,>1C1C,>1C1C,>1F0F     *137 -177       157
+       DATA >0000,>E0F0,>7070,>7070     *138 -178       158
+       DATA >7070,>7070,>7070,>F0E0     *139 -179  ^    159
+ 
+       DATA >7F7F,>7F7F,>7F7F,>7F7F     *116 -180
+       DATA >7F7F,>7F7F,>7F7F,>7F7F     *117 -181
+       DATA >FEFE,>FEFE,>FEFE,>FEFE     *118 -182
+       DATA >FEFE,>FEFE,>FEFE,>FEFE     *119 -183
+ 
+CHR1   DATA >0000,>00FF,>FF00,>0000     *33 -1    ^
+       DATA >0000,>00FF,>FFC0,>C0C0     *34 -2
+       DATA >0000,>00FF,>FF03,>0303     *35 -3
+       DATA >0000,>0000,>0000,>FFFF     *36 -4
+       DATA >FFFF,>0000,>0000,>0000     *37 -5    Col 1,7
+       DATA >C0C0,>C0C0,>C0C0,>C0C0     *38 -6
+       DATA >0303,>0303,>0303,>0303     *39 -7    ^
+ 
+       DATA >0000,>0000,>0000,>0000     *58 -8    ^
+       DATA >3C42,>99A1,>A199,>423C     *64 -9
+       DATA >1010,>1010,>1010,>1010     *104-10
+       DATA >030F,>1F3F,>7F7F,>FFFF     *108-11   Col 15,12
+       DATA >C0F0,>F8FC,>FEFE,>FFFF     *109-12
+       DATA >FFFF,>7F7F,>3F1F,>0F03     *110-13   ^
+       DATA >FFFF,>FEFE,>FCF8,>F0C0     *111-14   to 15
+ 
+CHR2   DATA >030F,>1F3F,>7F7F,>FFFF     *40 -16   ^
+       DATA >C0F0,>F8FC,>FEFE,>FFFF     *41 -17   Col 12,7
+       DATA >FFFF,>7F7F,>3F1F,>0F03     *42 -18   ^
+       DATA >FFFF,>FEFE,>FCF8,>F0C0     *43 -19   to 23
+ 
+ 
+CHR4   DATA >FFFF,>FFFF,>FFFF,>FFFF     *96 -120  Col 4,15
+       DATA >0000,>0000,>0000,>0000     *97 -121  to 127
+CHR3   DATA >FFFF,>0000,>0000,>FFFF     *91 -128  ^
+       DATA >C0C0,>C0C0,>C0C0,>C0C0     *92 -129
+       DATA >C0C0,>C0C0,>C0C0,>FFFF     *93 -130  Col 1,14
+       DATA >0303,>0303,>0303,>0303     *94 -131
+       DATA >0303,>0303,>0303,>FFFF     *95 -132  to 135
+ 
+SPEECH DATA >0200,>1A42,>0014,>0900,>0000     B 1
+       DATA >0200,>1A42,>0014,>5C00,>0000     B 2
+       DATA >0200,>1A42,>0014,>9A00,>0000     B 3
+       DATA >0200,>1A42,>0014,>E700,>0000     B 4
+       DATA >0200,>1A42,>0015,>3100,>0000     B 5
+       DATA >0200,>1A42,>0015,>A800,>0000     B 6
+       DATA >0200,>1A42,>0015,>E800,>0000     B 7
+       DATA >0200,>1A42,>0016,>3700,>0000     B 8
+       DATA >0200,>1A42,>0016,>6400,>0000     B 9
+       DATA >0200,>1A42,>0066,>4E00,>0000     B10
+       DATA >0200,>1A42,>0027,>5900,>0000     B11
+       DATA >0200,>1A42,>0070,>CE00,>0000     B12
+       DATA >0200,>1A42,>006D,>1100,>0000     B13
+       DATA >0200,>1A42,>002C,>7F00,>0000     B14
+       DATA >0200,>1A42,>0029,>C200,>0000     B15
+       DATA >0300,>3793,>0015,>A800,>65BF     I16
+       DATA >0300,>3793,>0015,>E800,>65BF     I17
+       DATA >0300,>3793,>0016,>3700,>65BF     I18
+       DATA >0300,>3793,>0016,>6400,>65BF     I19
+       DATA >0200,>3793,>0071,>1900,>0000     I20
+       DATA >0300,>3793,>0071,>1900,>1409     I21
+       DATA >0300,>3793,>0071,>1900,>145C     I22
+       DATA >0300,>3793,>0071,>1900,>149A     I23
+       DATA >0300,>3793,>0071,>1900,>14E7     I24
+       DATA >0300,>3793,>0071,>1900,>1531     I25
+       DATA >0300,>3793,>0071,>1900,>15A8     I26
+       DATA >0300,>3793,>0071,>1900,>15E8     I27
+       DATA >0300,>3793,>0071,>1900,>1637     I28
+       DATA >0300,>3793,>0071,>1900,>1664     I29
+       DATA >0200,>3793,>006D,>A200,>0000     I30
+       DATA >0300,>4786,>006D,>A200,>1409     N31
+       DATA >0300,>4786,>006D,>A200,>145C     N32
+       DATA >0300,>4786,>006D,>A200,>149A     N33
+       DATA >0300,>4786,>006D,>A200,>14E7     N34
+       DATA >0300,>4786,>006D,>A200,>1531     N35
+       DATA >0300,>4786,>006D,>A200,>15A8     N36
+       DATA >0300,>4786,>006D,>A200,>15E8     N37
+       DATA >0300,>4786,>006D,>A200,>1637     N38
+       DATA >0300,>4786,>006D,>A200,>1664     N39
+       DATA >0200,>4786,>002C,>3E00,>0000     N40
+       DATA >0300,>4786,>002C,>3E00,>1409     N41
+       DATA >0300,>4786,>002C,>3E00,>145C     N42
+       DATA >0300,>4786,>002C,>3E00,>149A     N43
+       DATA >0300,>4786,>002C,>3E00,>14E7     N44
+       DATA >0300,>4786,>002C,>3E00,>1531     N45
+       DATA >0300,>2DEB,>002C,>3E00,>15A8     G46
+       DATA >0300,>2DEB,>002C,>3E00,>15E8     G47
+       DATA >0300,>2DEB,>002C,>3E00,>1637     G48
+       DATA >0300,>2DEB,>002C,>3E00,>1664     G49
+       DATA >0200,>2DEB,>002A,>1D00,>0000     G50
+       DATA >0300,>2DEB,>002A,>1D00,>1409     G51
+       DATA >0300,>2DEB,>002A,>1D00,>145C     G52
+       DATA >0300,>2DEB,>002A,>1D00,>149A     G53
+       DATA >0300,>2DEB,>002A,>1D00,>14E7     G54
+       DATA >0300,>2DEB,>002A,>1D00,>1531     G55
+       DATA >0300,>2DEB,>002A,>1D00,>15A8     G56
+       DATA >0300,>2DEB,>002A,>1D00,>15E8     G57
+       DATA >0300,>2DEB,>002A,>1D00,>1637     G58
+       DATA >0300,>2DEB,>002A,>1D00,>1664     G59
+       DATA >0200,>2DEB,>0060,>1A00,>0000     G60
+       DATA >0300,>4B7D,>0060,>1A00,>1409     O61
+       DATA >0300,>4B7D,>0060,>1A00,>145C     O62
+       DATA >0300,>4B7D,>0060,>1A00,>149A     O63
+       DATA >0300,>4B7D,>0060,>1A00,>14E7     O64
+       DATA >0300,>4B7D,>0060,>1A00,>1531     O65
+       DATA >0300,>4B7D,>0060,>1A00,>15A8     O66
+       DATA >0300,>4B7D,>0060,>1A00,>15E8     O67
+       DATA >0300,>4B7D,>0060,>1A00,>1637     O68
+       DATA >0300,>4B7D,>0060,>1A00,>1664     O69
+       DATA >0200,>4B7D,>005D,>5000,>0000     O70
+       DATA >0300,>4B7D,>005D,>5000,>1409     O71
+       DATA >0300,>4B7D,>005D,>5000,>145C     O72
+       DATA >0300,>4B7D,>005D,>5000,>149A     O73
+       DATA >0300,>4B7D,>005D,>5000,>14E7     O74
+       DATA >0300,>4B7D,>005D,>5000,>1531     O75
+ 
+MSCRN  DATA 0,34,L01,66,L02,98,L03,130,L04,162,L05,194,L06
+       DATA 226,L07,258,L08,290,L09,322,L10,354,L11,386,L12
+       DATA 418,L13,450,L14,482,L15,514,L16,546,L17,578,L18
+       DATA 610,L19,642,L20,674,L21,706,L22,-1
+CHARS0 DATA >0808,112,CHR1,>0880,32,CHR2,>0C00,40,CHR3
+       DATA >0BC0,16,CHR4,>0C60,160,SPRITF,-1
+BMENU  DATA BEEP,642,MEN18,-1
+HTEXT  DATA 15,46,BGO01,15,46,BGO02,15,46,BGO03,15,46,BGO04
+       DATA 15,46,BGO05,15,46,BGO06,15,46,BGO07
+       DATA 12,51,CRD01,0
+SAVLEN DATA 0
+OUTPAB DATA >0016,PABBUF,>8080,>0000,>0003
+OUTBUF TEXT 'PIO                   '
+       EVEN
+BNO    TEXT 'this is -NOT- a bingo       '
+BYES   TEXT '-BINGO- congratulations     '
+CRDBUF TEXT '    '
+SPCES  TEXT '                                '
+BGONUM TEXT '                         '
+       TEXT '                         '
+BLINE  TEXT '010203040506070809101112131415'
+ILINE  TEXT '161718192021222324252627282930'
+NLINE  TEXT '313233343536373839404142434445'
+GLINE  TEXT '464748495051525354555657585960'
+OLINE  TEXT '616263646566676869707172737475'
+CLINE  TEXT '010203040506070809101112131415'
+       TEXT '161718192021222324252627282930'
+       TEXT '313233343536373839404142434445'
+       TEXT '464748495051525354555657585960'
+       TEXT '616263646566676869707172737475'
+       DATA >FFFF
+FREE   TEXT 'FREE'
+BINGO  TEXT 'B-I-N-G-O-'
+ZERO   TEXT '09'
+L01    BYTE 16,8,8,8,8,8,8,8,8,8,8,8,8,8,8,17,0
+L02    BYTE 8,11,121,121,121,121,121,121,121,121,121,121
+       BYTE 121,121,12,8,32,32,32,32,32,2,1,1,3,0
+L03    BYTE 8,140,142,121,144,146,121,148,150,121,152,154
+       BYTE 121,156,158,8,32,32,32,32,32,6,32,32,7,0
+L04    BYTE 8,141,143,121,145,147,121,149,151,121,153,155
+       BYTE 121,157,159,8,32,32,32,32,4,6,32,32,7,4,0
+L05    BYTE 8,13,121,121,121,121,121,121,121,121,121,121
+       BYTE 121,121,14,8,32,32,32,32,129,6,32,32,7,131,0    *
+L06    BYTE 8,8,8,8,8,8,8,8,8,8,8,8                        *
+       BYTE 8,8,8,8,32,32,32,32,129,6,32,32,7,131,0
+L07    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10
+       BYTE 8,8,8,32,32,32,32,130,128,128,128,128,132,0
+L08    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10,8,8,8,0
+L09    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10
+       BYTE 8,8,8,32,32,32,32,32,2,1,1,3,0
+L10    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10
+       BYTE 8,8,8,32,32,32,32,32,6,32,32,7,0
+L11    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10
+       BYTE 8,8,8,32,32,32,32,32,6,32,32,7,0
+L12    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10
+       BYTE 8,8,8,32,32,32,32,32,6,32,32,7,0
+L13    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10
+       BYTE 8,8,8,32,32,32,32,32,6,32,32,7,0
+L14    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10
+       BYTE 8,8,8,32,32,32,32,32,5,5,5,5,0
+L15    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10,8,8,8,0
+L16    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10,8,8,8
+       TEXT '  PRESS'
+       BYTE 0
+L17    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10,8,8,8,0
+L18    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10,8,8,8
+       TEXT ' (S)tart'
+       BYTE 0
+L19    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10,8,8,8
+       TEXT ' (P)ause'
+       BYTE 0
+L20    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10,8,8,8
+       TEXT ' (R)epeat'
+       BYTE 0
+L21    BYTE 8,8,8,10,8,8,10,8,8,10,8,8,10,8,8,8
+       TEXT ' (N)ew game'
+       BYTE 0
+L22    BYTE 18,8,8,8,8,8,8,8,8,8,8,8,8,8,8,19
+       TEXT ' (B)ingo'
+       BYTE 0
+BGO01  TEXT 'BBBBB      IIII     N    N     GGGG      OOOO '
+BGO02  TEXT 'B    B      II      NN   N    G    G    O    O'
+BGO03  TEXT 'B    B      II      N N  N    G         O    O'
+BGO04  TEXT 'BBBBB       II      N  N N    G  GGG    O    O'
+BGO05  TEXT 'B    B      II      N   NN    G    G    O    O'
+BGO06  TEXT 'B    B      II      N    N    G    G    O    O'
+BGO07  TEXT 'BBBBB      IIII     N    N     GGGG      OOOO '
+CRD01  TEXT '*****************************************'
+       TEXT '**********'
+CRD02  TEXT '*         *         *         *         *'
+       TEXT '         *'
+CRD03  TEXT '*         *         *         *         *'
+       TEXT '         *'
+LSTTIT TEXT 'BINGO CALL LIST'
+LSTLNE TEXT '---------------'
+MEN01  TEXT 'SATURDAY NIGHT'
+       BYTE 0
+MEN02  BYTE 9
+       TEXT ' 1980 TEXAS INSTRUMENTS'
+       BYTE 0
+TITLE1 TEXT '     This programme was     '
+       BYTE 0
+TITLE2 TEXT ' Rewritten And modified in  '
+       BYTE 0
+TITLE3 TEXT '    In ASSEMBLY LANGUAGE    '
+       BYTE 0
+TITLE4 TEXT '      BY CECIL G. CHIN      '
+       BYTE 0
+TITLE5 TEXT '  9T9 Users Group, TORONTO  '
+       BYTE 0
+MEN03  TEXT 'PRESS ANY KEY'
+       BYTE 0
+MEN04  TEXT 'PRINT DEVICE CONFIGURATION'
+       BYTE 0
+MEN06  TEXT 'NUMBER OF CARDS?'
+       BYTE 0
+MEN07  TEXT 'CARD BEING PRINTED..........'
+       BYTE 0
+MEN08  TEXT 'CALL LIST BEING PRINTED.....'
+       BYTE 0
+MEN11  TEXT 'PRESS'
+       BYTE 0
+MEN12  TEXT '1....AUTOMATIC GAME MODE'
+       BYTE 0
+MEN13  TEXT '2.......MANUAL GAME MODE'
+       BYTE 0
+MEN14  TEXT '3......PRINT BINGO CARDS'
+       BYTE 0
+MEN15  TEXT '4........PRINT CALL LIST'
+       BYTE 0
+MEN19  TEXT '5..........CHANGE OUTPUT'
+       BYTE 0
+MEN16  TEXT '6.........EXIT PROGRAMME'
+       BYTE 0
+MEN18  TEXT 'Numbers (two Digits ea.)'
+       BYTE 0
+ME01   BYTE 4,4,4,4,4,4,4,4,4,4,4
+       BYTE 4,4,4,4,4,4,4,4,4,4,4,0
+ME02   BYTE 5,5,5,5,5,5,5,5,5,5,5
+       BYTE 5,5,5,5,5,5,5,5,5,5,5,0
+ME03   BYTE 6
+       TEXT 'SATURDAY NIGHT BINGO'
+       BYTE 7,0
+ME04   BYTE 6,0
+ME05   BYTE 7,0
+HEX50  BYTE >50
+       EVEN
+WSPACE BSS  32
+UTILWS BSS  32
+REDCHR BSS  16
+SAVSCR BSS  160
+       EVEN
